@@ -8,11 +8,12 @@ import org.junit.jupiter.api.Test
 class Day2 {
     @Test
     fun test() {
-        assertEquals(447, one())
-        assertEquals(249, two())
+        val input = Path("input/2").readLines()
+        assertEquals(447, one(input))
+        assertEquals(249, two(input))
     }
 
-    private fun one(): Int {
+    private fun one(input: List<String>): Int {
         class Entry(line: String) {
             val range: IntRange
             val c: Char
@@ -25,15 +26,15 @@ class Day2 {
             }
         }
 
-        val input = Path("input/2").readLines().map { Entry(it) }
+        val entries = input.map { Entry(it) }
 
-        return input.map { entry ->
+        return entries.map { entry ->
             val count = entry.password.toCharArray().count { it == entry.c }
             if (count in entry.range) 1 else 0
         }.sum()
     }
 
-    private fun two(): Int {
+    private fun two(input: List<String>): Int {
         class Entry(line: String) {
             val positions: List<Int>
             val c: Char
@@ -46,9 +47,9 @@ class Day2 {
             }
         }
 
-        val input = Path("input/2").readLines().map { Entry(it) }
+        val entries = input.map { Entry(it) }
 
-        return input.map { entry ->
+        return entries.map { entry ->
             val count = entry.positions.count { entry.password[it] == entry.c }
             if (count == 1) 1 else 0
         }.sum()

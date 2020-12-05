@@ -8,13 +8,12 @@ import org.junit.jupiter.api.Test
 class Day3 {
     @Test
     fun test() {
-        assertEquals(167, one())
-        assertEquals(736527114, two())
+        val input = Path("input/3").readLines()
+        assertEquals(167, one(input))
+        assertEquals(736527114, two(input))
     }
 
-    private fun one(): Int {
-        val input = Path("input/3").readLines()
-
+    private fun one(input: List<String>): Int {
         var column = 0
         var row = 0
         val columnIncrement = 3
@@ -24,17 +23,14 @@ class Day3 {
         while (true) {
             row += rowIncrement
             if (row >= input.size) {
-                break
+                return trees
             }
             column = (column + columnIncrement) % input[row].length
             if (input[row][column] == '#') trees++
         }
-        return trees
     }
 
-    private fun two(): Int {
-        val input = Path("input/3").readLines()
-
+    private fun two(input: List<String>): Int {
         fun slope(columnIncrement: Int, rowIncrement: Int): Int {
             var column = 0
             var row = 0

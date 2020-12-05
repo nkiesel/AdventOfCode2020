@@ -9,13 +9,12 @@ import org.junit.jupiter.api.Test
 class Day4 {
     @Test
     fun test() {
-        assertEquals(230, one())
-        assertEquals(156, two())
+        val input = Path("input/4").readLines()
+        assertEquals(230, one(input))
+        assertEquals(156, two(input))
     }
 
-    private fun one(): Int {
-        val input = Path("input/4").readLines()
-
+    private fun one(input: List<String>): Int {
         class Passport(val mandatory: Set<String>, s: String) {
             val map = s.trim().split(Regex("\\s+")).map { p -> val (k, v) = p.split(":"); k to v }.toMap()
 
@@ -33,9 +32,7 @@ class Day4 {
         return p.count { Passport(mandatory, it).isValid() }
     }
 
-    private fun two(): Int {
-        val input = Path("input/4").readLines()
-
+    private fun two(input: List<String>): Int {
         val passports = buildList {
             var current = ""
             input.forEach { line ->

@@ -8,13 +8,12 @@ import org.junit.jupiter.api.Test
 class Day5 {
     @Test
     fun test() {
-        assertEquals(935, one())
-        assertEquals(743, two())
+        val input = Path("input/5").readLines()
+        assertEquals(935, one(input))
+        assertEquals(743, two(input))
     }
 
-    private fun one(): Int {
-        val input = Path("input/5").readLines()
-
+    private fun one(input: List<String>): Int {
         fun seatId(code: String): Int {
             return code.toCharArray().fold(0) { acc, c -> acc * 2 + if (c == 'R' || c == 'B') 1 else 0 }
         }
@@ -22,9 +21,7 @@ class Day5 {
         return input.maxOf { seatId(it) }
     }
 
-    private fun two(): Int {
-        val input = Path("input/5").readLines()
-
+    private fun two(input: List<String>): Int {
         fun seatId(code: String): Int {
             return code.toCharArray().fold(0) { acc, c -> acc * 2 + if (c == 'R' || c == 'B') 1 else 0 }
         }
