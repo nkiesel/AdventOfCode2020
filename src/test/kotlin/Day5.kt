@@ -13,19 +13,16 @@ class Day5 {
         assertEquals(743, two(input))
     }
 
-    private fun one(input: List<String>): Int {
-        fun seatId(code: String): Int {
-            return code.toCharArray().fold(0) { acc, c -> acc * 2 + if (c == 'R' || c == 'B') 1 else 0 }
-        }
+    private val m = mapOf('R' to 1, 'L' to 0, 'B' to 1, 'F' to 0)
+    private fun seatId(code: String): Int {
+        return code.toCharArray().fold(0) { acc, c -> acc * 2 + m[c]!! }
+    }
 
+    private fun one(input: List<String>): Int {
         return input.maxOf { seatId(it) }
     }
 
     private fun two(input: List<String>): Int {
-        fun seatId(code: String): Int {
-            return code.toCharArray().fold(0) { acc, c -> acc * 2 + if (c == 'R' || c == 'B') 1 else 0 }
-        }
-
         return input.map { seatId(it) }.sorted().zipWithNext().find { it.second != it.first + 1 }!!.first + 1
     }
 }
