@@ -2,8 +2,10 @@ import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
 import kotlin.test.assertEquals
+import kotlin.time.ExperimentalTime
 import org.junit.jupiter.api.Test
 
+@ExperimentalTime
 @ExperimentalStdlibApi
 @ExperimentalPathApi
 class Day4 {
@@ -15,78 +17,52 @@ class Day4 {
     }
 
     private fun one(input: List<String>): Int {
-        class Passport(val mandatory: Set<String>, s: String) {
-            val map = s.trim().split(Regex("\\s+")).map { p -> val (k, v) = p.split(":"); k to v }.toMap()
+        val passports = input.chunkedBy { it.isEmpty() }.map { l -> l.joinToString(" ") }
 
-            fun isValid() = (mandatory - map.keys).isEmpty()
+        class Passport(s: String) {
+            val fields = s.split(" ").flatMap { it.split(":").zipWithNext() }.toMap()
+            fun isValid(mandatory: Set<String>) = (mandatory - fields.keys).isEmpty()
         }
 
-        val p = mutableListOf<String>()
-        p.add(input.reduce { acc, string ->
-            if (string.isEmpty()) {
-                p.add(acc); ""
-            } else "$acc $string"
-        })
-
         val mandatory = setOf("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
-        return p.count { Passport(mandatory, it).isValid() }
+        return passports.count { Passport(it).isValid(mandatory) }
     }
 
     private fun two(input: List<String>): Int {
-        val passports = buildList {
-            var current = ""
-            input.forEach { line ->
-                current = when {
-                    line.isEmpty() -> "".also { if (current.isNotEmpty()) add(current) }
-                    current.isEmpty() -> line
-                    else -> "$current $line"
-                }
-            }
-            if (current.isNotEmpty()) add(current)
-        }
+        val passports = input.chunkedBy { it.isEmpty() }.map { l -> l.joinToString(" ") }
 
-        // less "magic" but more code...
-        val passports2 = buildList {
-            val i = input.iterator()
-            while (i.hasNext()) {
-                val current = buildList {
-                    while (i.hasNext()) {
-                        val line = i.next()
-                        if (line.isEmpty()) break
-                        add(line)
-                    }
-                }.joinToString(" ")
-                if (current.isNotEmpty()) add(current)
-            }
-        }
-
-        class Field(val key: String, val constraint: (String) -> Boolean)
+        class Rule(val key: String, val constraint: (String) -> Boolean)
 
         val mandatory = listOf(
-            Field("byr") { Regex("\\d{4}").matches(it) && it.toInt() in 1920..2002 },
-            Field("iyr") { Regex("\\d{4}").matches(it) && it.toInt() in 2010..2020 },
-            Field("eyr") { Regex("\\d{4}").matches(it) && it.toInt() in 2020..2030 },
-            Field("hgt") { Regex("(\\d+)(cm|in)").matchEntire(it)?.destructured?.let { (height, unit) ->
+            Rule("byr") { Regex("\\d{4}").matches(it) && it.toInt() in 1920..2002 },
+            Rule("iyr") { Regex("\\d{4}").matches(it) && it.toInt() in 2010..2020 },
+            Rule("eyr") { Regex("\\d{4}").matches(it) && it.toInt() in 2020..2030 },
+            Rule("hgt") { Regex("(\\d+)(cm|in)").matchEntire(it)?.destructured?.let { (height, unit) ->
                 when (unit) {
                     "cm" -> height.toInt() in 150..193
-                    "in" -> height.toInt() in 59..76
-                    else -> false
+                    else -> height.toInt() in 59..76
                 } } ?: false },
-            Field("hcl") { Regex("#[0-9a-f]{6}").matches(it) },
-            Field("ecl") { Regex("amb|blu|brn|gry|grn|hzl|oth").matches(it) },
-            Field("pid") { Regex("\\d{9}").matches(it) },
+            Rule("hcl") { Regex("#[0-9a-f]{6}").matches(it) },
+            Rule("ecl") { Regex("amb|blu|brn|gry|grn|hzl|oth").matches(it) },
+            Rule("pid") { Regex("\\d{9}").matches(it) },
         )
 
         class Passport(s: String) {
-            val fields = s.split(" ").flatMap { it.split(":", limit=2).zipWithNext() }.toMap()
-            // less "magic"...
-            // val fields = s.split(" ").map { val (k, v) = it.split(":", limit=2); k to v }.toMap()
-            // val fields = s.split(" ").map { it.split(":", limit=2).let { (k, v) -> k to v } }.toMap()
-
-            fun isValid() = mandatory.all { m -> fields[m.key]?.let { m.constraint(it) } ?: false }
+            val fields = s.split(" ").flatMap { it.split(":").zipWithNext() }.toMap()
+            fun isValid(mandatory: List<Rule>) = mandatory.all { m -> fields[m.key]?.let { m.constraint(it) } ?: false }
         }
 
-        println(passports.count { Passport(it).isValid() })
-        return passports2.count { Passport(it).isValid() }
+        return passports.count { Passport(it).isValid(mandatory) }
     }
 }
+
+// "chunkedBy" was copied from https://github.com/edgars-supe/advent-of-code/blob/master/src/main/kotlin/lv/esupe/aoc/utils/ListUtil.kt#L59-L64
+fun <T> List<T>.chunkedBy(selector: (T) -> Boolean): List<List<T>> =
+    fold(mutableListOf(mutableListOf<T>())) { acc, item ->
+        if (selector(item)) {
+            acc.add(mutableListOf())
+        } else {
+            acc.last().add(item)
+        }
+        acc
+    }
