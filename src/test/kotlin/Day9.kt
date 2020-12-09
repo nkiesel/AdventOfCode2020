@@ -28,16 +28,14 @@ class Day9 {
 
     private fun two(input: List<Long>, value: Long): Long {
         var s = 0
-        var e = 1
-        while (true) {
-            val l = input.subList(s, e)
-            val sum = l.sum()
-            when {
-                sum == value -> return l.minOrNull()!! + l.maxOrNull()!!
-                sum < value -> e++
-                else -> s++
-            }
+        var e = 0
+        var sum = 0L
+        while (sum != value) {
+            if (sum < value) sum += input[e++]
+            else sum -= input[s++]
         }
+        val l = input.subList(s, e)
+        return l.minOrNull()!! + l.maxOrNull()!!
     }
 
     /* Notes
