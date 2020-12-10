@@ -11,6 +11,7 @@ class Day10 {
         val input = Path("input/10").readLines().map { it.toInt() }
         assertEquals(1920, one(input))
         assertEquals(1511207993344L, two(input))
+        assertEquals(1511207993344L, two_A(input))
     }
 
     private fun one(input: List<Int>): Int {
@@ -45,8 +46,17 @@ class Day10 {
         return chains.last().count
     }
 
+    private fun two_A(input: List<Int>): Long {
+        val chains = mutableMapOf(0 to 1L)
+        for (i in input.sorted()) chains[i] = (1..3).sumOf { chains.getOrDefault(i - it, 0L) }
+        return chains[input.maxOrNull()!!]!!
+    }
+
+
     /* Notes
-        - as usual, solutions assume "good" data: no duplicates, no negative numbers etc.
-        - we only need a "lookback" of 3 for problem 2 because any given number can only be used for at most the last 3 previous numbers
+        - As usual, solutions assume "good" data: no duplicates, no negative numbers etc.
+        - Ae only need a "lookback" of 3 for problem 2 because any given number can only be used for at most the last 3 previous numbers
+        - `two_A` was what came to me after I stared at my `two` solution for a bit. It wastes memory because it keeps all
+          intermediate results instead of just the last 3 but with the provided input it is still "fast enough"
      */
 }
