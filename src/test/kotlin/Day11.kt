@@ -32,11 +32,19 @@ class Day11 {
     class Room(private val data: Array<CharArray>) {
         fun clone(): Room = Room(data.map { it.copyOf() }.toTypedArray())
 
-        fun adjacent(row: Int, col: Int) = (-1..1).sumOf { r ->
-            (-1..1).count { c ->
-                !(r == 0 && c == 0) && data[row + r][col + c] == '#'} }
+        fun adjacent(row: Int, col: Int) = (-1..1).sumOf { r -> (-1..1).count { c -> adjacent(row, col, r, c) } }
+
+        private fun adjacent(row: Int, col: Int, r: Int, c: Int): Boolean {
+            if (r == 0 && c == 0) return false
+            val ri = row + r
+            val ci = col + c
+            return (ri in rowIndices && ci in colIndices) && data[ri][ci] == '#'
+        }
+
+        fun visible(row: Int, col: Int) = (-1..1).sumOf { r -> (-1..1).count { c -> visible(row, col, r, c) } }
 
         private fun visible(row: Int, col: Int, r: Int, c: Int): Boolean {
+            if (r == 0 && c == 0) return false
             var ri = row + r
             var ci = col + c
             while (ri in rowIndices && ci in colIndices) {
@@ -49,10 +57,6 @@ class Day11 {
             }
             return false
         }
-
-        fun visible(row: Int, col: Int) = (-1..1).sumOf { r ->
-            (-1..1).count { c ->
-                !(r == 0 && c == 0) && visible(row, col, r, c) } }
 
         fun show() {
             data.forEach { println(it.joinToString("")) }
@@ -67,21 +71,18 @@ class Day11 {
             data[row][col] = c
         }
 
-        val rowIndices = 1..(data.size - 2)
-        val colIndices = 1..(data[0].size - 2)
+        val rowIndices = data.indices
+        val colIndices = data[0].indices
 
         companion object {
             fun fromInput(input: List<String>): Room {
-                val dots = listOf(".".repeat(input.first().length))
-                return Room((dots + input + dots).map { line -> ".$line.".toCharArray() }.toTypedArray())
+                return Room((input).map { it.toCharArray() }.toTypedArray())
             }
         }
     }
 
     private fun one(input: List<String>): Int {
-
-        var room = Day11.Room.fromInput(input)
-  //      room.show()
+        var room = Room.fromInput(input)
 
         while (true) {
             val clone = room.clone()
@@ -93,7 +94,6 @@ class Day11 {
                     }
                 }
             }
-//            clone.show()
             if (room.occupancy == clone.occupancy) return clone.occupancy
             room = clone
         }
@@ -111,7 +111,6 @@ class Day11 {
                     }
                 }
             }
-//            clone.show()
             if (room.occupancy == clone.occupancy) return clone.occupancy
             room = clone
         }
