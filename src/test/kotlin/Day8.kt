@@ -20,6 +20,7 @@ class Day8 {
             jmp -4
             acc +6
         """.trimIndent().lines()
+        assertEquals(5, one(test))
         assertEquals(1930, one(input))
         assertEquals(1688, two(input))
     }

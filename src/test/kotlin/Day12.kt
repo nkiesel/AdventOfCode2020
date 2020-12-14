@@ -75,7 +75,6 @@ class Day12 {
     private fun two(input: List<String>): Int {
         val ship = Point(0, 0)
         val waypoint = Point(10, 1)
-        var i = 0
         input.map { line -> line[0] to line.drop(1).toInt() }.forEach { (direction, amount) ->
             when (direction) {
                 'N' -> waypoint.move(0, amount)
