@@ -17,7 +17,7 @@ class Day4 {
     }
 
     private fun one(input: List<String>): Int {
-        val passports = input.chunkedBy { it.isEmpty() }.map { l -> l.joinToString(" ") }
+        val passports = input.chunkedBy { it.isBlank() }.map { l -> l.joinToString(" ") }
 
         class Passport(s: String) {
             val fields = s.split(" ").flatMap { it.split(":").zipWithNext() }.toMap()
