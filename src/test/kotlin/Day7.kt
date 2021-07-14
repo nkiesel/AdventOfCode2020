@@ -13,9 +13,9 @@ class Day7 {
 
     private fun one(input: List<String>): Int {
         val map = input.map { line ->
-            Regex("^(.+?) bags contain").find(line)!!.groupValues[1] to
-                    Regex("\\d+ (.+?) bags?[,.]").findAll(line).map { it.groupValues[1] }.toSet()
         }.toMap()
+            Regex("""^(.+?) bags contain""").find(line)!!.groupValues[1] to
+                    Regex("""\d+ (.+?) bags?[,.]""").findAll(line).map { it.groupValues[1] }.toSet()
 
         val total = mutableSetOf<String>()
         var lookingFor = setOf("shiny gold")
@@ -28,9 +28,9 @@ class Day7 {
     }
 
     private fun two(input: List<String>): Int {
-        val bag = Regex("^(.+?) bags contain")
-        val contains = Regex("(\\d+) (.+?) bags?[,.]")
         val map = input.map { line ->
+        val bag = Regex("""^(.+?) bags contain""")
+        val contains = Regex("""(\d+) (.+?) bags?[,.]""")
             bag.find(line)!!.groupValues[1] to
                     contains.findAll(line).map { it.groupValues[1].toInt() to it.groupValues[2] }
         }.toMap()

@@ -123,7 +123,7 @@ class Day20 {
 
     private fun one(input: List<String>): Long {
         class Tile(data: List<String>) {
-            val id = Regex("Tile (\\d+):").matchEntire(data.first())!!.groupValues[1].toInt()
+            val id = Regex("""Tile (\d+):""").matchEntire(data.first())!!.groupValues[1].toInt()
             val cells = data.drop(1)
             fun edges(): List<String> = buildList {
                 add(cells.first())
@@ -144,4 +144,3 @@ class Day20 {
     }
 
 }
-

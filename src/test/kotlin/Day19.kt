@@ -87,19 +87,19 @@ class Day19 {
                 0 -> if (line.isEmpty()) {
                     state = 1
                 } else {
-                    line.split(": ").let { (a, b) -> re[Regex("\\b$a\\b")] = b }
+                    line.split(": ").let { (a, b) -> re[Regex("""\b$a\b""")] = b }
                 }
                 1 -> data.add(line)
             }
         }
 
         while (re.size > 1) {
-            val r = re.entries.find { !it.value.contains(Regex("\\d")) }!!
+            val r = re.entries.find { !it.value.contains(Regex("""\d""")) }!!
             re.remove(r.key)
             re = re.entries.map { (k, v) -> k to v.replace(r.key, "(${r.value})") }.toMap().toMutableMap()
         }
 
-        val rule0 = re.values.first().replace(Regex("[ \"]"), "").replace(Regex("\\((.)\\)"), "$1").toRegex()
+        val rule0 = re.values.first().replace(Regex("""[ "]"""), "").replace(Regex("""\((.)\)"""), "$1").toRegex()
 
         return data.count { d -> rule0.matches(d) }
     }
@@ -108,7 +108,7 @@ class Day19 {
         var state = 0
         var re = mutableMapOf<String, String>()
         val data = mutableListOf<String>()
-        fun String.re() = Regex("\\b$this\\b")
+        fun String.re() = Regex("""\b$this\b""")
         input.forEach { line ->
             when(state) {
                 0 -> if (line.isEmpty()) {
@@ -126,12 +126,12 @@ class Day19 {
         re.remove("0")
 
         while (re.size > 2) {
-            val r = re.entries.find { !it.value.contains(Regex("\\d")) }!!
+            val r = re.entries.find { !it.value.contains(Regex("""\d""")) }!!
             re.remove(r.key)
-            re = re.entries.map { (k, v) -> k to v.replace(r.key.re(), "(${r.value})") }.toMap().toMutableMap()
+            re = re.entries.associate { (k, v) -> k to v.replace(r.key.re(), "(${r.value})") }.toMutableMap()
         }
 
-        fun cleanup(s: String) = s.replace(Regex("[ \"]"), "").replace(Regex("\\((.)\\)"), "$1")
+        fun cleanup(s: String) = s.replace(Regex("""[ "]"""), "").replace(Regex("""\((.)\)"""), "$1")
 
         val rule8 = cleanup(re["8"]!!.replace(special, ""))
         val rule11 = re["11"]!!.split(special).map { cleanup(it) }

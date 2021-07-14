@@ -45,7 +45,7 @@ class Day22 {
 
         val players = buildList {
             input.chunkedBy { it.isEmpty() }.forEach { p ->
-                val id = Regex("Player (\\d+):").matchEntire(p.first())!!.groupValues[1].toInt()
+                val id = Regex("""Player (\d+):""").matchEntire(p.first())!!.groupValues[1].toInt()
                 val cards = p.drop(1).map { it.toInt() }
                 add(Player(id, ArrayDeque(cards)))
             }
@@ -68,7 +68,7 @@ class Day22 {
 
         val players = buildList {
             input.chunkedBy { it.isEmpty() }.forEach { p ->
-                val id = Regex("Player (\\d+):").matchEntire(p.first())!!.groupValues[1].toInt()
+                val id = Regex("""Player (\d+):""").matchEntire(p.first())!!.groupValues[1].toInt()
                 val cards = p.drop(1).map { it.toInt() }
                 add(Player(id, ArrayDeque(cards)))
             }
@@ -109,4 +109,3 @@ class Day22 {
         - overall simple, but `two` returns the wrong value!!!
      */
 }
-

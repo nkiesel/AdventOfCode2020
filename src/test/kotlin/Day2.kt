@@ -17,9 +17,9 @@ class Day2 {
             val c: Char
             val password: String
             init {
-                val m = Regex("(\\d+)-(\\d+) (\\w): (\\w+)").matchEntire(line)!!.groupValues
                 range = m[1].toInt()..m[2].toInt()
                 c = m[3][0]
+                val m = Regex("""(\d+)-(\d+) (\w): (\w+)""").matchEntire(line)!!.groupValues
                 password = m[4]
             }
         }
@@ -38,9 +38,9 @@ class Day2 {
             val c: Char
             val password: String
             init {
-                val m = Regex("(\\d+)-(\\d+) (\\w): (\\w+)").matchEntire(line)!!.groupValues
                 positions = listOf(m[1].toInt() - 1, m[2].toInt() - 1)
                 c = m[3][0]
+                val m = Regex("""(\d+)-(\d+) (\w): (\w+)""").matchEntire(line)!!.groupValues
                 password = m[4]
             }
         }

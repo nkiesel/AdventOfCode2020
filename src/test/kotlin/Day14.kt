@@ -33,7 +33,7 @@ class Day14 {
         var andMask = 0L
         fun masked(value: Long) = value or orMask and andMask
         input.forEach { line ->
-            val r = Regex("""(mask|mem\[(\d+)\]) = (.+)""").matchEntire(line)!!.groupValues
+            val r = Regex("""(mask|mem\[(\d+)]) = (.+)""").matchEntire(line)!!.groupValues
             if (r[1] == "mask") {
                 orMask = r[3].replace("X", "0").toLong(2)
                 andMask = r[3].replace("X", "1").toLong(2)
@@ -64,7 +64,7 @@ class Day14 {
         }
 
         input.forEach { line ->
-            val r = Regex("""(mask|mem\[(\d+)\]) = (.+)""").matchEntire(line)!!.groupValues
+            val r = Regex("""(mask|mem\[(\d+)]) = (.+)""").matchEntire(line)!!.groupValues
             if (r[1] == "mask") {
                 mask = r[3]
                 orMask = mask.replace("X", "0").toLong(2)
