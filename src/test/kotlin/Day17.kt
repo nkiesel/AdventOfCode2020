@@ -22,7 +22,7 @@ class Day17 {
     private fun one(input: List<String>): Int {
         data class Cube(val x: Int, val y: Int, val z: Int)
 
-        var active = input.mapIndexedNotNull { row, line -> line.mapIndexedNotNull { col, c -> if (c == '#') Cube(col, row, 0) else null } }
+        var active = input.mapIndexed { row, line -> line.mapIndexedNotNull { col, c -> if (c == '#') Cube(col, row, 0) else null } }
             .flatten().toSet()
 
         repeat(6) {
@@ -64,7 +64,7 @@ class Day17 {
     private fun two(input: List<String>): Int {
         data class Cube(val x: Int, val y: Int, val z: Int, val w: Int)
 
-        var active = input.mapIndexedNotNull { row, line -> line.mapIndexedNotNull { col, c -> if (c == '#') Cube(col, row, 0, 0) else null } }
+        var active = input.mapIndexed { row, line -> line.mapIndexedNotNull { col, c -> if (c == '#') Cube(col, row, 0, 0) else null } }
             .flatten().toSet()
 
         repeat(6) {

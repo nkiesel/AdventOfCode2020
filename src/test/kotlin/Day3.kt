@@ -23,8 +23,9 @@ class Day3 {
             if (row >= input.size) {
                 return trees
             }
-            column = (column + columnIncrement) % input[row].length
-            if (input[row][column] == '#') trees++
+            val currentRow = input[row]
+            column = (column + columnIncrement) % currentRow.length
+            if (currentRow[column] == '#') trees++
         }
     }
 
@@ -38,8 +39,9 @@ class Day3 {
                 if (row >= input.size) {
                     return trees
                 }
-                column = (column + columnIncrement) % input[row].length
-                if (input[row][column] == '#') trees++
+                val currentRow = input[row]
+                column = (column + columnIncrement) % currentRow.length
+                if (currentRow[column] == '#') trees++
             }
         }
 

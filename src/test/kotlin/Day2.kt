@@ -13,43 +13,43 @@ class Day2 {
 
     private fun one(input: List<String>): Int {
         class Entry(line: String) {
-            val range: IntRange
-            val c: Char
             val password: String
+            val letter: Char
+            val range: IntRange
+
             init {
-                range = m[1].toInt()..m[2].toInt()
-                c = m[3][0]
                 val m = Regex("""(\d+)-(\d+) (\w): (\w+)""").matchEntire(line)!!.groupValues
                 password = m[4]
+                letter = m[3][0]
+                range = m[1].toInt()..m[2].toInt()
             }
+
+            fun isValid() = password.count { it == letter } in range
         }
 
         val entries = input.map { Entry(it) }
 
-        return entries.map { entry ->
-            val count = entry.password.toCharArray().count { it == entry.c }
-            if (count in entry.range) 1 else 0
-        }.sum()
+        return entries.count { it.isValid() }
     }
 
     private fun two(input: List<String>): Int {
         class Entry(line: String) {
-            val positions: List<Int>
-            val c: Char
             val password: String
+            val letter: Char
+            val positions: List<Int>
+
             init {
-                positions = listOf(m[1].toInt() - 1, m[2].toInt() - 1)
-                c = m[3][0]
                 val m = Regex("""(\d+)-(\d+) (\w): (\w+)""").matchEntire(line)!!.groupValues
                 password = m[4]
+                letter = m[3][0]
+                positions = listOf(m[1].toInt() - 1, m[2].toInt() - 1)
             }
+
+            fun isValid() = positions.count { password[it] == letter } == 1
         }
 
         val entries = input.map { Entry(it) }
 
-        return entries.map { entry ->
-            val count = entry.positions.count { entry.password[it] == entry.c }
-            if (count == 1) 1 else 0
-        }.sum()
+        return entries.count { it.isValid() }
     }
 }

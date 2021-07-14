@@ -47,13 +47,13 @@ class Day10 {
     private fun two_A(input: List<Int>): Long {
         val chains = mutableMapOf(0 to 1L)
         for (i in input.sorted()) chains[i] = (1..3).sumOf { chains.getOrDefault(i - it, 0L) }
-        return chains[input.maxOrNull()!!]!!
+        return chains[input.maxOf { it }]!!
     }
 
 
     /* Notes
         - As usual, solutions assume "good" data: no duplicates, no negative numbers etc.
-        - Ae only need a "lookback" of 3 for problem 2 because any given number can only be used for at most the last 3 previous numbers
+        - We only need a "look-back" of 3 for problem 2 because any given number can only be used for at most the last 3 previous numbers
         - `two_A` was what came to me after I stared at my `two` solution for a bit. It wastes memory because it keeps all
           intermediate results instead of just the last 3 but with the provided input it is still "fast enough"
      */

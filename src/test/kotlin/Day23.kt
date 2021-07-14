@@ -15,16 +15,16 @@ class Day23 {
     private fun one(input: String, rounds: Int): String {
         val circle = ArrayDeque(input.toCharArray().map { (it - '0') })
         fun idx(i: Int) = i % circle.size
-        var ci: Int = 0
+        var ci = 0
         fun right(i: Int = 1) = idx(ci + i)
         repeat(rounds) {
             println("cups: ${circle.mapIndexed { i, c -> if (i == ci) "($c)" else "$c" }.joinToString(" ")}")
             val currentCup = circle[ci]
             val pickUps = (1..3).map { circle[right(it)] }
             println("pick up: $pickUps")
-            var substract = 1
+            var subtract = 1
             var destinationCup = pickUps.first()
-            while (destinationCup in pickUps) destinationCup = (currentCup - ++substract + circle.size) % circle.size + 1
+            while (destinationCup in pickUps) destinationCup = (currentCup - ++subtract + circle.size) % circle.size + 1
             println("destination: $destinationCup\n")
             circle.removeAll(pickUps)
             var di = circle.indexOf(destinationCup)
@@ -36,4 +36,3 @@ class Day23 {
     }
 
 }
-
