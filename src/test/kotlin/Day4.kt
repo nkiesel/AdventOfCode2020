@@ -1,13 +1,8 @@
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
 import kotlin.test.assertEquals
-import kotlin.time.ExperimentalTime
 import org.junit.jupiter.api.Test
 
-@ExperimentalTime
-@ExperimentalStdlibApi
-@ExperimentalPathApi
 class Day4 {
     @Test
     fun test() {

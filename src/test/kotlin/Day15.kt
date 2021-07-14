@@ -1,10 +1,7 @@
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 
 
-@ExperimentalStdlibApi
-@ExperimentalPathApi
 class Day15 {
     @Test
     fun test() {

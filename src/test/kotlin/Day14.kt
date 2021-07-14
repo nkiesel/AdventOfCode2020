@@ -1,4 +1,3 @@
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
 import kotlin.math.pow
@@ -6,8 +5,6 @@ import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 
 
-@ExperimentalStdlibApi
-@ExperimentalPathApi
 class Day14 {
     @Test
     fun test() {
