@@ -29,17 +29,17 @@ class Day4 {
         class Rule(val key: String, val constraint: (String) -> Boolean)
 
         val mandatory = listOf(
-            Rule("byr") { Regex("""\d{4}""").matches(it) && it.toInt() in 1920..2002 },
-            Rule("iyr") { Regex("""\d{4}""").matches(it) && it.toInt() in 2010..2020 },
-            Rule("eyr") { Regex("""\d{4}""").matches(it) && it.toInt() in 2020..2030 },
+            Rule("byr") { it matches Regex("""\d{4}""") && it.toInt() in 1920..2002 },
+            Rule("iyr") { it matches Regex("""\d{4}""") && it.toInt() in 2010..2020 },
+            Rule("eyr") { it matches Regex("""\d{4}""") && it.toInt() in 2020..2030 },
             Rule("hgt") { Regex("""(\d+)(cm|in)""").matchEntire(it)?.destructured?.let { (height, unit) ->
                 when (unit) {
                     "cm" -> height.toInt() in 150..193
                     else -> height.toInt() in 59..76
                 } } ?: false },
-            Rule("hcl") { Regex("""#[0-9a-f]{6}""").matches(it) },
-            Rule("ecl") { Regex("""amb|blu|brn|gry|grn|hzl|oth""").matches(it) },
-            Rule("pid") { Regex("""\d{9}""").matches(it) },
+            Rule("hcl") { it matches Regex("""#[0-9a-f]{6}""") },
+            Rule("ecl") { it matches Regex("""amb|blu|brn|gry|grn|hzl|oth""") },
+            Rule("pid") { it matches Regex("""\d{9}""") },
         )
 
         class Passport(s: String) {

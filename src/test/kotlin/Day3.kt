@@ -20,7 +20,7 @@ class Day3 {
 
         while (true) {
             row += rowIncrement
-            if (row >= input.size) {
+            if (row !in input.indices) {
                 return trees
             }
             val currentRow = input[row]
@@ -36,7 +36,7 @@ class Day3 {
             var trees = 0
             while (true) {
                 row += rowIncrement
-                if (row >= input.size) {
+                if (row !in input.indices) {
                     return trees
                 }
                 val currentRow = input[row]
